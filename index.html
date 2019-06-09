@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+</head>
+
+<body>
+    <div id="draw-here" ;</div>
+
+        <script>
+            /* var w=800;
+                    var h=200;
+                    var data = [40,50,23,10,67];
+                    
+                 
+                 
+                    var svg=d3.select("#draw-here")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+                    
+                    
+                    svg.selectAll ("circle")
+                    .data (data)
+                    .enter()
+                    .append ('circle') 
+                    .attr("cx",function (d, i){
+                      return 50 +  (i*100)  ;
+                    })
+                    .attr("cy",h/2)
+                    .attr("r", function(d){
+                        return d;
+                    });*/
+
+            var w = 500;
+            var h = 500;
+
+            var barPadding = 1;
+            var dataset = [450, 100, 100, 278, 656, 452, 658, 274, 659, 652, 111, 145, 523, 222, 658, 486];
+            
+            var scale =d3.scale.linear()
+            .domain([0,d3.max(dataset)])   //data before  modifying .domain([0,700])
+            .range([0,h]); // data before  modifying  .range([0,500]);
+
+            var colWidth = w / dataset.length;
+            var barWidth = colWidth - barPadding;
+
+            var svg = d3.select('#draw-here') // to create an SVG object
+                .append('svg') //we append an SVG as a child of that div
+                .attr("height", h)
+                .attr('width', w)
+
+            svg.selectAll('rect') // we're setting up our bar chart
+                .data(dataset)
+                .enter()
+                .append('rect') // we define what the rectangle will look like so we append a rectangle 
+                
+                //going to give it its X&Y coordinates its height and its width so
+                .attr('x', function(d, i) {  // let's do let's set the x coordinate and again this would be a function and the        
+                 return i * colWidth;        //   function U takes in two parameters our uses two parameters d and i is the data which is the actual value in a in the data set array and I is the index of
+                                             //   that data and the x value is going to be the width divided by the data set length
+                 })      
+                                       
+                .attr('y', function(d) {  // let's set the Y value for each bar
+                    return h - scale(d);
+                })
+                .attr("height", function(d) {  // let's set the rectangle height 
+                    return scale(d);
+                })
+                .attr('width', barWidth );   // let's set the width and the width will be W divided by the data set length
+                                              // minus the barpadding l
+
+
+//  we will display the actual values the integer values for each bar 
+svg.selectAll('text')
+.data(dataset)
+.enter()
+.append ("text")
+.text (function(d){ // we use a text object again we bind the text to the data set that's where we
+                    // get our values from so for each entry in the data set there will be a text object
+    return d;       // we bind the text to the data set that's where we get
+})
+
+.attr('text-anchor', 'middle')// it's an SVG attribute called text anchor and we're setting it to middle 
+.attr('x', function(d,i){
+    return i * colWidth +barWidth/2;
+})
+.attr('y',function(d){
+    return h-scale(d) +14;     // it'll be 14 pixels down from the top of the bar itself 
+})
+.attr('font-family', 'sans-serif')  //we're setting some additional text properties such as the font family sound
+
+
+.attr('font-size','11px')   // giving it a font size of 11 pixels
+.attr('fill','white')       // we're going to fill the text element with the color white
+
+
+
+                
+        </script>
+
+</body>
+
+</html>
